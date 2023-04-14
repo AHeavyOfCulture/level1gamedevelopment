@@ -29,6 +29,9 @@ func _input(event):
 
 func _physics_process(delta):
 	
+	if is_on_ceiling():
+		gravity_vec = Vector3.ZERO
+	
 	if ground_check.is_colliding():
 		full_contact = true
 	else:

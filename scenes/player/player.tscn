@@ -7,6 +7,8 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3p8mi"]
 
 [node name="Player" type="CharacterBody3D"]
+wall_min_slide_angle = 0.0
+floor_stop_on_slope = false
 script = ExtResource("1_haew0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -21,4 +23,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.708077, 0)
 [node name="Camera3D" type="Camera3D" parent="Head"]
 
 [node name="GroundCheck" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0953751, 0)

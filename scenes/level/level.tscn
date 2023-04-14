@@ -1,6 +1,9 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://bn0bbil7cnwwq"]
 
 [ext_resource type="PackedScene" uid="uid://g8nk6ghj641t" path="res://scenes/player/player.tscn" id="1_vus3u"]
+[ext_resource type="PackedScene" uid="uid://b5lwa7j1o0nhg" path="res://data/import/level1.gltf" id="2_d3vrw"]
+[ext_resource type="PackedScene" uid="uid://dqv78xi1kcohi" path="res://scenes/objects/lightbulb.tscn" id="3_xa3b7"]
+[ext_resource type="LightmapGIData" uid="uid://5oo3sikjm41p" path="res://data/level.lmbake" id="4_p2p6h"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ot7qv"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -12,14 +15,11 @@ sky_material = SubResource("ProceduralSkyMaterial_ot7qv")
 [sub_resource type="Environment" id="Environment_o7ghs"]
 background_mode = 2
 sky = SubResource("Sky_kn5l2")
+ambient_light_source = 1
+reflected_light_source = 1
 tonemap_mode = 2
+sdfgi_use_occlusion = true
 glow_enabled = true
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_iqfv1"]
-size = Vector3(30, 1, 30)
-
-[sub_resource type="BoxMesh" id="BoxMesh_cxjb0"]
-size = Vector3(30, 1, 30)
 
 [node name="Level" type="Node3D"]
 
@@ -31,13 +31,15 @@ transform = Transform3D(0.707107, -0.612372, 0.353553, 0, 0.5, 0.866025, -0.7071
 shadow_enabled = true
 shadow_normal_bias = 0.0
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("BoxShape3D_iqfv1")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-mesh = SubResource("BoxMesh_cxjb0")
-
 [node name="Player" parent="." instance=ExtResource("1_vus3u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.282676, 1.55669, 0.347761)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="level1" parent="." instance=ExtResource("2_d3vrw")]
+
+[node name="Objects" type="Node3D" parent="."]
+
+[node name="Lightbulb" parent="." instance=ExtResource("3_xa3b7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6462, 2.87644, 0.455075)
+
+[node name="LightmapGI" type="LightmapGI" parent="."]
+light_data = ExtResource("4_p2p6h")
