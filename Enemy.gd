@@ -1,11 +1,13 @@
 extends CharacterBody3D
 
-var health = 100
+var health = 50
 var player: Node3D
 var maxbullettime = 5
 var bullettime = maxbullettime
 
 var enemyspawner
+
+@onready var muzzle =  $Muzzle
 
 @export var bulletscene: PackedScene
 
@@ -21,7 +23,6 @@ func _physics_process(delta):
 	rotation.z = 0
 	move_and_slide()
 	if bullettime <0:
-		print("fired")
 		fire()
 		bullettime = maxbullettime
 
@@ -38,6 +39,7 @@ func die():
 	
 func fire():
 	var newbullet = bulletscene.instantiate()
+	newbullet.position = muzzle.position
 	newbullet.isfiredbyenemy = true
 	add_child(newbullet)
 	newbullet.look_at(player.position)

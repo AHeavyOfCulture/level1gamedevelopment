@@ -2,6 +2,8 @@ extends CharacterBody3D
 
 var speed = 10
 
+signal playerdied
+
 var health = 200
 var score = 0
 
@@ -113,7 +115,7 @@ func damage(amount):
 		die()
 
 func die():
-	print("dead")
+	playerdied.emit()
 
 func movementStateChange(changetype):
 	match changetype:

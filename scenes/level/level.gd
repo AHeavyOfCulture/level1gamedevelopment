@@ -1,12 +1,16 @@
 extends Node3D
 
 @onready var ui = $CanvasLayer/Ui
-@onready var warning: Label = $CanvasLayer/Menu/MarginContainer/VBoxContainer/Warning
+@onready var warning: Label = $CanvasLayer/Mainmenu/VBoxContainer/Warning
 @onready var enemyspawner: Node3D = $enemyspawner
-@onready var menu: ColorRect = $CanvasLayer/Menu
+@onready var mainmenu = $CanvasLayer/Mainmenu
 @onready var health: Label = $CanvasLayer/Ui/Health
 @onready var player = $Player
 @onready var score: Label = $CanvasLayer/Ui/Score
+@onready var deathscreen = $CanvasLayer/Deathscreen
+@onready var initialplayerposition = player.position
+@onready var initialplayerrotation = player.rotation
+@onready var initialplayerhealth = player.health
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -14,7 +18,13 @@ func _ready():
 	get_tree().paused = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	enemyspawner.incrementscore.connect(incrementscore)
+	player.playerdied.connect(onplayerdied)
 
+func onplayerdied():
+	deathscreen.show()
+	ui.hide()
+	get_tree().paused = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -39,7 +49,7 @@ func _on_line_edit_text_submitted(new_text: String):
 		
 		# The number is valid and we pass the number to the spawner and unpause the game to start it
 		enemyspawner.numberofenemies = number
-		menu.hide()
+		mainmenu.hide()
 		get_tree().paused = false
 		ui.show()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -51,3 +61,14 @@ func _on_line_edit_text_submitted(new_text: String):
 
 func _on_exit_pressed():
 	get_tree().quit()
+
+
+func _on_restart_pressed():
+	mainmenu.show()
+	deathscreen.hide()
+	ui.hide()
+	for i in range(enemyspawner.get_child_count()):
+		enemyspawner.get_child(i).queue_free()
+	player.position = initialplayerposition
+	player.rotation = initialplayerrotation
+	player.health = initialplayerhealth

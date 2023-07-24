@@ -18,7 +18,7 @@ func spawnenemies():
 	print(numberofenemies)
 	for i in range(numberofenemies):
 		var newenemy = enemyscene.instantiate()
-		newenemy.position = Vector3(randf_range(-10, 10), 1.3, randf_range(-10, 10))
+		newenemy.position = Vector3(randf_range(-100, 100), 50, randf_range(-100, 100))
 		newenemy.enemyspawner = self
 		newenemy.player = player
 		add_child(newenemy)
