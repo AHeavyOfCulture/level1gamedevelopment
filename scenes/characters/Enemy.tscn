@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://clt7ydmb5jx8x"]
+
+[ext_resource type="Script" path="res://Enemy.gd" id="1_841r5"]
+[ext_resource type="PackedScene" uid="uid://q638cndchnce" path="res://scenes/player/bullet.tscn" id="2_8gvni"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q8phr"]
+size = Vector3(0.5, 1.5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_go8cb"]
+
+[node name="Enemy" type="CharacterBody3D" groups=["Enemy"]]
+wall_min_slide_angle = 0.0
+script = ExtResource("1_841r5")
+bulletscene = ExtResource("2_8gvni")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_q8phr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 1.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_go8cb")
