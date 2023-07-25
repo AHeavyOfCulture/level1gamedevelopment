@@ -28,12 +28,11 @@ func _physics_process(delta):
 
 func damage(amount):
 	health -= amount
-	if health <0:
+	if health <= 0:
 		health = 0
 		die()
 
 func die():
-	print("enemy dead")
 	enemyspawner.enemydied()
 	queue_free()
 	
@@ -42,4 +41,7 @@ func fire():
 	newbullet.position = muzzle.position
 	newbullet.isfiredbyenemy = true
 	add_child(newbullet)
+	
 	newbullet.look_at(player.position)
+	newbullet.rotation += Vector3(randf_range(-0.1, 0.1), randf_range(-0.1, 0.1), 0)
+	

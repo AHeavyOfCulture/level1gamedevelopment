@@ -38,7 +38,7 @@ func incrementscore():
 # Called when the user presses enter
 func _on_line_edit_text_submitted(new_text: String):
 	# Checks if the text the user entered is an integer because this number determines
-	# how many enemies are spawned
+	# How many enemies are spawned
 	if new_text.is_valid_int():
 		var number = int(new_text)
 		# Checks is the number is a negative because we can't spawn a negative amount of enemies

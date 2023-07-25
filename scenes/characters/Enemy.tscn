@@ -1156,6 +1156,7 @@ _data = {
 }
 
 [node name="Enemy" type="CharacterBody3D" groups=["Enemy"]]
+collision_layer = 4
 wall_min_slide_angle = 0.0
 script = ExtResource("1_841r5")
 bulletscene = ExtResource("2_8gvni")

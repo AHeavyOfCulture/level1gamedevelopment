@@ -1,8 +1,8 @@
 extends CharacterBody3D
 
-var speed = 10
-
 signal playerdied
+
+var speed = 10
 
 var health = 200
 var score = 0
@@ -35,50 +35,63 @@ var movement = Vector3()
 var gravity_vec = Vector3()
 
 @onready var head = $Head
-@onready var muzzle = $Head/Gun/Muzzle
+@onready var muzzle = $Head/Hand/Gun/Muzzle
 @onready var bullet = preload("res://scenes/player/bullet.tscn")
-@onready var gun: Node3D = $Head/Gun
-@onready var targetgunposition = gun.position
-
+@onready var gun: Node3D = $Head/Hand/Gun
+@onready var hand: Node3D = $Head/Hand
+@onready var regularposition = hand.position
+@onready var aimposition = Vector3(0, -0.16, -0.4)
+@onready var targethandposition = hand.position
+@onready var camera: Camera3D = $Head/Camera3D
+@onready var default_fov = camera.fov
+@onready var aim_fov = int(camera.fov / 2)
 
 func _ready():
+	# Captures the mouse so it does not go off the end of the screen
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _input(event):
+	# Handles the rotation of the player when the mouse is moved
 	if event is InputEventMouseMotion:
 		rotate_y(deg_to_rad(-event.relative.x * mouse_sensitivity))
 		head.rotate_x(deg_to_rad(-event.relative.y * mouse_sensitivity))
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-90), deg_to_rad(90))
-		gun.position.x -= event.relative.x * 0.0005
-		gun.position.y += event.relative.y * 0.0005
+		hand.position.x -= event.relative.x * 0.0005
+		hand.position.y += event.relative.y * 0.0005
 
 func _physics_process(_delta):
 	
-	gun.position = gun.position.lerp(targetgunposition, 0.3)
+	hand.position = hand.position.lerp(targethandposition, 0.3)
 	
+	# Stops all vertical momentum when the player's head hits a ceiling
 	if is_on_ceiling():
 		gravity_vec = Vector3.ZERO
-		
+	
+	# Applys gravity to the player when they are not on the ground
 	if not is_on_floor():
 		gravity_vec += Vector3.DOWN * gravity * _delta
 		horizontal_acceleration = air_acceleration
 	else:
 		gravity_vec = -get_floor_normal()
 		horizontal_acceleration = normal_acceleration
-		
+	
+	# Jumping when the jump key is pressed
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		gravity_vec = Vector3.UP * jump
 	
+	# Crouching when the crouch key is pressed
 	if Input.is_action_just_pressed("crouch"):
 		if iscrouching == false:
 			movementStateChange("crouch")
 			truespeed = crouchspeed
 	
+	# Uncrouches when the crouch key is released
 	if Input.is_action_just_released("crouch"):
 		if iscrouching == true:
 			movementStateChange("uncrouch")
 			truespeed = walkspeed
 	
+	# Handles the movement direction
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forwards", "move_backwards")
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
@@ -95,14 +108,30 @@ func _physics_process(_delta):
 	movement.x = horizontal_velocity.x + gravity_vec.x
 	movement.y = gravity_vec.y
 	
-	timer -= 0.01
+	timer -= 0.015
 	
 	if Input.is_action_pressed("fire") and timer <0:
 		$AnimationPlayer.play("fire")
 		var b = bullet.instantiate()
+		b.isfiredbyenemy = false
+		b.lastposition = muzzle.position
 		muzzle.add_child(b)
+		b.rotation += Vector3(randf_range(-0.01, 0.01), randf_range(-0.01, 0.01), 0)
 		b.shoot = true
 		timer = timermax
+	
+	#var interpolation_value: float = 8.0 * (60 / (camera.fov * 8)) + 1
+	var interpolation_value: float = 4.0
+	
+	if Input.is_action_pressed("aim"):
+		targethandposition = aimposition
+		camera.fov -= interpolation_value
+	else:
+		targethandposition = regularposition
+		camera.fov += interpolation_value
+	
+	camera.fov = clamp(camera.fov, aim_fov, default_fov)
+	
 	
 	velocity = movement
 	
@@ -110,7 +139,7 @@ func _physics_process(_delta):
 
 func damage(amount):
 	health -= amount
-	if health <0:
+	if health <= 0:
 		health = 0
 		die()
 
