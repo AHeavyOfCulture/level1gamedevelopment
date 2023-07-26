@@ -1,0 +1,67 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://2s4t3oy17nne"
+path="res://.godot/imported/palmtree1.glb-d07f999b7e56084794cdc0390d8c05e1.scn"
+
+[deps]
+
+source_file="res://data/import/palmtree1.glb"
+dest_files=["res://.godot/imported/palmtree1.glb-d07f999b7e56084794cdc0390d8c05e1.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+import_script/path=""
+_subresources={
+"materials": {
+"M_bark_hair_inst": {
+"use_external/enabled": true,
+"use_external/path": "res://data/materials/M_bark_hair_inst.tres"
+},
+"M_frond_01_inst": {
+"use_external/enabled": true,
+"use_external/path": "res://data/materials/M_frond_01_inst.tres"
+},
+"M_frond_02_inst_Inst": {
+"use_external/enabled": true,
+"use_external/path": "res://data/materials/M_frond_02_inst_Inst.tres"
+},
+"M_palm_bark_01": {
+"use_external/enabled": true,
+"use_external/path": "res://data/materials/M_palm_bark_01.tres"
+},
+"M_palm_bark_02": {
+"use_external/enabled": true,
+"use_external/path": "res://data/materials/M_palm_bark_02.tres"
+}
+},
+"meshes": {
+"palmtree1_Palm_tree_001_v2_M_palm_bark_01_0": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/make_streamable": "",
+"save_to_file/path": "res://data/meshes/palmtree1_Palm_tree_001_v2_M_palm_bark_01_0.res"
+}
+}
+}
+gltf/embedded_image_handling=1

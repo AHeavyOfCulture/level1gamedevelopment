@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://c0x04j60dwyna"]
+
+[ext_resource type="Texture2D" uid="uid://k0b2tg4saksn" path="res://data/import/palmtree1_M_palm_bark_01_baseColor.png" id="1_uv2ip"]
+[ext_resource type="Texture2D" uid="uid://bbcf11181o8jy" path="res://data/import/palmtree1_M_palm_bark_01_normal.png" id="2_v1f4f"]
+
+[resource]
+resource_name = "M_palm_bark_01.1"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_uv2ip")
+roughness = 0.6
+normal_enabled = true
+normal_texture = ExtResource("2_v1f4f")

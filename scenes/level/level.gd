@@ -11,6 +11,10 @@ extends Node3D
 @onready var initialplayerposition = player.position
 @onready var initialplayerrotation = player.rotation
 @onready var initialplayerhealth = player.health
+@onready var terrainmesh: MeshInstance3D = $map/Terrain
+@onready var treemultimesh: MultiMeshInstance3D = $MultiMeshInstance3D
+@onready var waterlevel = $map/Water
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,7 +23,8 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	enemyspawner.incrementscore.connect(incrementscore)
 	player.playerdied.connect(onplayerdied)
-
+	spawntrees()
+	
 func onplayerdied():
 	deathscreen.show()
 	ui.hide()
@@ -33,6 +38,28 @@ func _process(delta):
 func incrementscore():
 	player.score += 1
 	score.text = "score: " + str(player.score)
+
+func spawntrees() -> void:
+	var vertexpositions = terrainmesh.mesh.get_faces()
+	var culledvertexpositions: PackedVector3Array
+	
+	for i in range(vertexpositions.size()):
+		var treeposition: Vector3 = vertexpositions[i]
+		if treeposition.y > waterlevel.position.y:
+			culledvertexpositions.append(treeposition)
+	
+	treemultimesh.multimesh.instance_count = culledvertexpositions.size()
+	for i in range(treemultimesh.multimesh.instance_count):
+		var previoustreeposition: Vector3 = culledvertexpositions[i]
+		var nexttreeposition: Vector3 = culledvertexpositions[i]
+		
+		if i > 1:
+			previoustreeposition = culledvertexpositions[i - 1]
+		if i < treemultimesh.multimesh.instance_count - 1:
+			nexttreeposition = culledvertexpositions[i + 1]
+		var treeposition: Vector3 = culledvertexpositions[i]
+		var treetransform: Transform3D = Transform3D().translated((treeposition + previoustreeposition + nexttreeposition) / 3)
+		treemultimesh.multimesh.set_instance_transform(i, treetransform)
 
 
 # Called when the user presses enter
